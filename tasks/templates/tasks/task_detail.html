@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>{{ task.title }}</h2>
+    <p>{{ task.description }}</p>
+    <p>Due by: {{ task.due_date|date:"D, d M Y" }}</p>
+    <a href="{% url 'task_edit' task.id %}" class="btn btn-primary">Edit</a>
+    <a href="{% url 'task_delete' task.id %}" class="btn btn-danger">Delete</a>
+{% endblock %}

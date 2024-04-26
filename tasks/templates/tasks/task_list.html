@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="d-flex flex-column min-vh-100">  <!-- Контейнер, занимающий минимальную высоту вьюпорта -->
+        <div class="mb-auto">  <!-- Содержимое страницы -->
+            <h2>Task List</h2>
+            <div class="list-group">
+                {% for task in page_obj %}
+                    <a href="{% url 'task_detail' task.id %}" class="list-group-item list-group-item-action">
+                        {{ task.title }}
+                        <small class="text-muted">due by {{ task.due_date|date:"D, d M Y" }}</small>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% if page_obj.paginator.num_pages > 1 %} 
+        <!-- Блок пагинации -->
+        <div class="mt-auto">  <!-- Прижимаем к низу -->
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">  <!-- Центрирование -->
+                    <!-- Пункты пагинации -->{% if page_obj.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+            {% else %}
+                <li class="page-item disabled"><span class="page-link">First</span></li>
+                <li class="page-item disabled"><span class="page-link">Previous</span></li>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a></li>
+            {% else %}
+                <li class="page-item disabled"><span class="page-link">Next</span></li>
+                <li class="page-item disabled"><span class="page-link">Last</span></li>
+            {% endif %}
+
+                </ul>
+            </nav>
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}
+ 
+                
+
+    
